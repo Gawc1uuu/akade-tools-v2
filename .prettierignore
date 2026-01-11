@@ -1,0 +1,9 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/.next/*
+bun.lock
+eslint.config.ts
+dist
+build

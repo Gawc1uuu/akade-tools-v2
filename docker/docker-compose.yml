@@ -10,11 +10,10 @@ services:
       - 5432:5432
     volumes:
       - akade-db-postgres:/var/lib/postgresql/data
-    healthcheck:  
+    healthcheck:
       test: pg_isready -U postgres -d akade
       interval: 1s
       timeout: 2s
       retries: 20
 volumes:
   akade-db-postgres:
-
