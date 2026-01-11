@@ -3,10 +3,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "prepare": "husky"
+    "typecheck": "tsc --noEmit"
   },
   "workspaces": [
     "packages/*"
