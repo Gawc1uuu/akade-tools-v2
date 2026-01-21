@@ -7,7 +7,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "docker:up": "docker compose -f docker/docker-compose.yml -p akade-tools up",
+    "docker:down": "docker compose -f docker/docker-compose.yml -p akade-tools down"
   },
   "workspaces": [
     "packages/*"
