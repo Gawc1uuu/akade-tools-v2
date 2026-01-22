@@ -14,7 +14,8 @@
   },
   "scripts": {
     "db:up": "docker compose -f ../../docker/docker-compose.yml -p akade-tools up",
-    "db:down": "docker compose -f ../../docker/docker-compose.yml -p akade-tools down"
+    "db:down": "docker compose -f ../../docker/docker-compose.yml -p akade-tools down",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
