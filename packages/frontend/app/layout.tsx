@@ -1,7 +1,9 @@
-import { ThemeProvider } from '@/components/theme-provider';
-import type { Metadata } from 'next';
-import { Outfit, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
+
+import type { Metadata } from 'next';
+import { IBM_Plex_Mono, IBM_Plex_Sans, Outfit } from 'next/font/google';
+
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],

@@ -10,7 +10,7 @@ export default defineConfig([
     ignores: ['**/.next/**', '**/node_modules/**', '**/dist/**'],
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     plugins: {
       js,
       prettier: eslintPluginPrettier,
@@ -19,7 +19,7 @@ export default defineConfig([
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
     rules: {
-      "prettier/prettier": "error",
+      'prettier/prettier': 'error',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
     },
