@@ -1,0 +1,63 @@
+'use client';
+
+import { CarIcon, FileText, Users } from 'lucide-react';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { Session } from '@/lib/types';
+
+import Logo from '../public/akade-logo.png';
+
+// This is sample data.
+const data = {
+  user: {
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
+  navMain: [
+    {
+      title: 'Samochody',
+      url: '/cars',
+      icon: CarIcon,
+    },
+    {
+      title: 'Pracownicy',
+      url: '/staff',
+      icon: Users,
+    },
+    {
+      title: 'Faktury',
+      url: '/invoices',
+      icon: FileText,
+    },
+  ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & { session: Session }) {
+  const pathname = usePathname();
+  const dynamicNavMain = data.navMain.map((item) => ({
+    ...item,
+    isActive: pathname.startsWith(item.url),
+  }));
+
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <div className="relative h-16 w-full overflow-hidden rounded-md">
+          <Image src={Logo} alt="Logo" fill className="object-fill" />
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={dynamicNavMain} />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={props.session} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
