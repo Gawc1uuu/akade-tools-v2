@@ -1,7 +1,8 @@
 'use client';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@radix-ui/react-collapsible';
-import { ChevronDown, Link, LucideIcon } from 'lucide-react';
+import { ChevronDown, LucideIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   SidebarGroup,
