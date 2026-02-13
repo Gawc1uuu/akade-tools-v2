@@ -14,6 +14,8 @@ const initialState: FormState = {
   success: false,
   errors: {},
   data: {
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
   },
@@ -40,7 +42,34 @@ const Register = () => {
         </CardHeader>
         <CardContent>
           <form action={formAction} id="register-form">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="grid gap-2 w-full">
+                  <Label htmlFor="firstName">Imię</Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    defaultValue={state?.data?.firstName ?? ''}
+                    placeholder="Jan"
+                    required
+                  />
+                  {state.errors.firstName && <ErrorDisplay messages={state.errors.firstName ?? []} />}
+                </div>
+                <div className="grid gap-2 w-full">
+                  <Label htmlFor="lastName">Nazwisko</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    defaultValue={state?.data?.lastName ?? ''}
+                    placeholder="Kowalski"
+                    required
+                  />
+                  {state.errors.lastName && <ErrorDisplay messages={state.errors.lastName ?? []} />}
+                </div>
+              </div>
+
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -71,7 +100,7 @@ const Register = () => {
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
             <Button type="submit" variant="default" className="w-full" form="register-form">
-              {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
+              {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejestruj się'}
             </Button>
             {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
@@ -80,7 +109,7 @@ const Register = () => {
                 className="text-red-400 font-medium hover:text-red-500/90 hover:cursor-pointer hover:underline"
                 href="/login"
               >
-                Zalgouj się
+                Zaloguj się
               </Link>
             </div>
           </div>

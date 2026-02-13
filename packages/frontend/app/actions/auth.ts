@@ -8,6 +8,8 @@ import { deleteSession } from '@/lib/session';
 import { deleteTokens, saveAccessTokenToCookies } from '@/lib/tokens';
 
 const registerFormSchema = z.object({
+  firstName: z.string().min(2, { message: 'Imię musi mieć co najmniej 2 znaki' }).trim(),
+  lastName: z.string().min(2, { message: 'Nazwisko musi mieć co najmniej 2 znaki' }).trim(),
   email: z.string().email('This is not correct email').trim(),
   password: z
     .string()
@@ -22,11 +24,15 @@ const registerFormSchema = z.object({
 export type FormState = {
   success: boolean;
   errors: {
+    firstName?: string[];
+    lastName?: string[];
     email?: string[];
     password?: string[];
     other?: string[];
   };
   data?: {
+    firstName?: string;
+    lastName?: string;
     email?: string;
     password?: string;
   };
@@ -34,14 +40,13 @@ export type FormState = {
 
 export async function signup(currentState: FormState, formData: FormData): Promise<FormState> {
   const rawData = {
+    firstName: formData.get('firstName')?.toString() ?? '',
+    lastName: formData.get('lastName')?.toString() ?? '',
     email: formData.get('email')?.toString() ?? '',
     password: formData.get('password')?.toString() ?? '',
   };
 
-  const validatedFields = registerFormSchema.safeParse({
-    email: formData.get('email'),
-    password: formData.get('password'),
-  });
+  const validatedFields = registerFormSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
     return {
@@ -73,7 +78,7 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     };
   }
 
-  const { email, password } = validatedFields.data;
+  const { email, password, firstName, lastName } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const { user } = await db.transaction(async (tx) => {
@@ -83,8 +88,8 @@ export async function signup(currentState: FormState, formData: FormData): Promi
         email: email,
         password: hashedPassword,
         role: 'USER',
-        firstName: '',
-        lastName: '',
+        firstName: firstName,
+        lastName: lastName,
         organizationId: invitation.organizationId,
       })
       .returning();
@@ -115,7 +120,12 @@ export async function login(currentState: FormState, formData: FormData): Promis
     password: formData.get('password')?.toString() ?? '',
   };
 
-  const validatedFields = registerFormSchema.safeParse({
+  const loginFormSchema = z.object({
+    email: z.string().email('This is not correct email').trim(),
+    password: z.string().min(1, { message: 'Password is required' }),
+  });
+
+  const validatedFields = loginFormSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
   });

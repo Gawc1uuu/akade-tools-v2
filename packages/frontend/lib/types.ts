@@ -33,6 +33,8 @@ export type Car = {
 export type User = {
   id: string;
   email: string;
+  firstName: string;
+  lastName: string;
   organizationId: string;
   role: string;
 };
