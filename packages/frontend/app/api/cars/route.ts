@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 
-  if (authHeader !== `Bearer ${cronSecret}`) {
+  if (authHeader !== `${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -54,6 +54,8 @@ export async function GET(request: Request) {
           ),
         ),
       );
+
+    console.log('cars to notify', carsToNotify);
 
     if (carsToNotify.length === 0) {
       return NextResponse.json({ message: 'No cars to notify' }, { status: 200 });
