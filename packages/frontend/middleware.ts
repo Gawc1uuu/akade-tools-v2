@@ -3,13 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { verifyToken } from '@/lib/tokens';
 
-const protectedRoutes = ['/', '/cars', '/staff'];
+const protectedRoutes = ['/', '/cars', '/staff', '/invoices'];
 const publicRoutes = ['/login', '/register'];
+const adminRoutes = ['/staff']; // Definiujemy trasy tylko dla admina
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
+  const isAdminRoute = adminRoutes.includes(path);
 
   const accessToken = req.cookies.get('accessToken')?.value;
 
@@ -24,6 +26,11 @@ export default async function middleware(req: NextRequest) {
 
   if (accessTokenPayload) {
     const session = await getSession();
+
+    // Sprawdzenie uprawnień administratora
+    if (isAdminRoute && accessTokenPayload.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/', req.nextUrl));
+    }
 
     if (!session) {
       const response = NextResponse.redirect(req.nextUrl);

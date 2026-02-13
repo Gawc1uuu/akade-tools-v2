@@ -1,8 +1,11 @@
+import { redirect } from 'next/navigation'; // Import redirect
+
 import InvitesTableContainer from '@/app/(pages)/staff/components/invites-table-container';
 import StaffTableContainer from '@/app/(pages)/staff/components/staff-table-container';
 import { parsePaginationParams } from '@/app/actions/cars/parsePaginationParams';
 import { getOrganizationInvites } from '@/app/actions/staff/get-invites';
 import { getOrganizationWorkers } from '@/app/actions/staff/get-organization-workers';
+import { getSession } from '@/lib/session'; // Import getSession
 
 interface StaffProps {
   searchParams: {
@@ -15,6 +18,12 @@ interface StaffProps {
 }
 
 const Staff = async ({ searchParams }: StaffProps) => {
+  // 1. Sprawdzenie sesji i roli
+  const session = await getSession();
+  if (!session || session.role !== 'ADMIN') {
+    redirect('/');
+  }
+
   const params = await searchParams;
   const { page: staffPage, limit: staffLimit, offset: staffOffset } = await parsePaginationParams(params, 'staff');
   const {
@@ -29,8 +38,6 @@ const Staff = async ({ searchParams }: StaffProps) => {
     offset: staffOffset,
     staffSearchTerm: params?.staffSearchTerm ?? '',
   });
-
-  console.log(workers);
 
   const invites = await getOrganizationInvites({
     page: invitesPage,
